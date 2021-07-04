@@ -1,5 +1,6 @@
 .DS_Store
 /env
+/code_prac/_version.py
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,vim,emacs,c
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,visualstudiocode,vim,emacs,c
