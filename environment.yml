@@ -1,0 +1,14 @@
+name: code_prac_hwsa2021
+channels:
+  - conda-forge
+dependencies:
+  - matplotlib>=1.5.1
+  - h5py>=2.5.0
+  - astropy>=1.1.1
+  - tqdm>=4.7.6
+  - scipy>=0.17.1
+  - seaborn>=0.9.0
+  - numba>=0.53.1
+  - click>=7.0
+  - Sphinx>=2.3.1
+  - line_profiler>=3.3.0
