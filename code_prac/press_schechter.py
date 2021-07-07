@@ -5,6 +5,8 @@
 #                                  *** DO NOT USE THIS FOR RESEARCH! ***                                       #
 ################################################################################################################
 
+import cProfile
+import pstats
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -115,7 +117,15 @@ def p_s_plot(z_list, M_list, dn_dlogm_list):
 def main(plot=False):
     redshifts = [0.0, 5.0, 10.0, 20.0, 30.0]
     masses = np.logspace(2, 15, num=200)
+
+    profile = cProfile.Profile()
+    profile.enable()
+
     dn_dlogm_list = mass_function(redshifts, masses)
+
+    profile.disable()
+    ps = pstats.Stats(profile).strip_dirs().sort_stats(pstats.SortKey.TIME)
+    ps.print_stats()
 
     if plot:
         p_s_plot(redshifts, masses, dn_dlogm_list)
