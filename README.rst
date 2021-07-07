@@ -3,6 +3,13 @@ HWSA 2021 code practical
 
 Slides can be found `here <https://smutch.github.io/hwsa2021-slides/>`_.
 
+A note on the code
+------------------
+
+This is not a production or science-ready code. It is only meant to be used as an example code to practice optimisation and play with Python tools. It is modified from a student's coursework project and makes several (well-founded) simplifying assumptions. The code has NOT been validated against known solutions.
+*** DO NOT USE THIS FOR RESEARCH! **
+
+
 Getting set up
 --------------
 
@@ -22,7 +29,7 @@ Pip
 
 This code has only been tested with Python 3.9. You can check your verison of python using::
 
-    python3 -V
+    python -V
 
 If you are using an older version then 3.9 then it is strongly recommended that you install it using `pyenv`_ or a similar python version management tool.
 
