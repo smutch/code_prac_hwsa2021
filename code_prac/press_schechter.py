@@ -1,33 +1,25 @@
-#!/bin/python
-# STANDARD MODULE IMPORTS
-from time import time
-
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.integrate import quad
 from scipy.misc import derivative
 
-__all__ = ["press_schecter"]
+__all__ = ["mass_function"]
 
-# "CONSTANTS" DEFINITIONS
-wm = 0.3089
-wl = 0.6911
-wb = 0.0486  # (not used)
-h0 = 67.74  # in km/s/Mpc
-h_inv = 100.0 / h0  # unitless
-std_8 = 0.72
-G = 4.302e-9  # in Mpc/M_solar (km/s)^2
-
-###########################################
+WM = 0.3089
+WL = 0.6911
+LITTLE_H0 = 67.74  # in km/s/Mpc
+LITTLE_H0_INV = 100.0 / LITTLE_H0  # unitless
+STD_8 = 0.72
+GRAVITY = 4.302e-9  # in Mpc/M_solar (km/s)^2
 
 
-def tophat_ft(k, r):
+def tophat_filter(k, r):
     kr = k * r
     return (3 * (np.sin(kr) - (kr * np.cos(kr))) / (kr) ** 3) ** 2
 
 
-def power(k, h=h_inv, n=1.0):
-    q = k / wm * h ** 2
+def power(k, h=LITTLE_H0_INV, n=1.0):
+    q = k / WM * h ** 2
     T = (
         np.log(1 + 2.34 * q)
         / (2.34 * q)
@@ -37,23 +29,23 @@ def power(k, h=h_inv, n=1.0):
 
 
 def stdev(R, A=0):
-    return A * np.sqrt(quad(lambda k: k ** 2 * power(k) * tophat_ft(k, r=R), 0, np.infty)[0])
+    return A * np.sqrt(quad(lambda k: k ** 2 * power(k) * tophat_filter(k, r=R), 0, np.infty)[0])
 
 
 def A_std_func():
-    r_8 = 8 * h_inv
-    A_std = std_8 / np.sqrt(quad(lambda k: k ** 2 * power(k) * tophat_ft(k, r=r_8), 0, np.infty)[0])
+    r_8 = 8 * LITTLE_H0_INV
+    A_std = STD_8 / np.sqrt(quad(lambda k: k ** 2 * power(k) * tophat_filter(k, r=r_8), 0, np.infty)[0])
     return A_std
 
 
-def H(a):
-    return h0 * np.sqrt(wm / a ** 3 + wl)
+def Hubble(a):
+    return LITTLE_H0 * np.sqrt(WM / a ** 3 + WL)
 
 
 def growth(a):
-    norm = H(1) * quad(lambda aa: (aa * H(aa)) ** (-3), 0, 1)[0]
-    integral = quad(lambda aa: (aa * H(aa)) ** (-3), 0, a)[0]
-    return H(a) * integral / norm
+    norm = Hubble(1) * quad(lambda aa: (aa * Hubble(aa)) ** (-3), 0, 1)[0]
+    integral = quad(lambda aa: (aa * Hubble(aa)) ** (-3), 0, a)[0]
+    return Hubble(a) * integral / norm
 
 
 def d_crit(z):
@@ -63,13 +55,13 @@ def d_crit(z):
 
 def rho_m(z):
     if z == 0:
-        return wm * 3 * h0 ** 2 / (8.0 * np.pi * G)
+        return WM * 3 * LITTLE_H0 ** 2 / (8.0 * np.pi * GRAVITY)
     else:
-        return wm * 3 * H(1 / (1 + z)) ** 2 / (8.0 * np.pi * G)
+        return WM * 3 * Hubble(1 / (1 + z)) ** 2 / (8.0 * np.pi * GRAVITY)
 
 
 def calculate(M_list, z, A_std):
-    R_list = (2 * (M_list) * G / (h0 ** 2 * wm)) ** (1 / 3)
+    R_list = (2 * (M_list) * GRAVITY / (LITTLE_H0 ** 2 * WM)) ** (1 / 3)
     rho = rho_m(z=0)
 
     d_c = d_crit(z)
@@ -78,7 +70,10 @@ def calculate(M_list, z, A_std):
     for r in R_list:
         std = stdev(r, A=A_std)
         deriv = (
-            2 * G / (3 * h0 ** 2 * wm * r ** 2) * derivative(lambda rr: np.log(stdev(rr, A=A_std)), x0=r, dx=r * 0.5)
+            2
+            * GRAVITY
+            / (3 * LITTLE_H0 ** 2 * WM * r ** 2)
+            * derivative(lambda rr: np.log(stdev(rr, A=A_std)), x0=r, dx=r * 0.5)
         )
         nu = d_c / std
         dn_dlogm.append(np.sqrt(2 / np.pi) * rho * -deriv * nu * np.exp(-(nu ** 2) / 2))
@@ -110,12 +105,12 @@ def p_s_plot(z_list, M_list, dn_dlogm_list):
 
 
 def main(plot=False):
-    z_list = [0.0, 5.0, 10.0, 20.0, 30.0]
-    M_list = np.logspace(2, 15, num=200)
-    dn_dlogm_list = mass_function(z_list, M_list)
+    redshifts = [0.0, 5.0, 10.0, 20.0, 30.0]
+    masses = np.logspace(2, 15, num=200)
+    dn_dlogm_list = mass_function(redshifts, masses)
 
     if plot:
-        p_s_plot(z_list, M_list, dn_dlogm_list)
+        p_s_plot(redshifts, masses, dn_dlogm_list)
 
 
 if __name__ == "__main__":
