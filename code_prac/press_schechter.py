@@ -1,3 +1,11 @@
+################################################################################################################
+#                     ** WARNING: This is not a production or science-ready code. **                           #
+# It is modified from a student's coursework project and makes several (well-founded) simplifying assumptions. #
+#                        The code has NOT been validated against known solutions.                              #
+#                                  *** DO NOT USE THIS FOR RESEARCH! ***                                       #
+################################################################################################################
+
+
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.integrate import quad
