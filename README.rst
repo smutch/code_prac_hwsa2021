@@ -20,7 +20,7 @@ First clone this repo from github::
     git clone git@github.com:smutch/code_prac_hwsa2021.git
     cd code_prac_hwsa2021
 
-Dependencies can be installed using either :ref:`pip <pip-install>` or :ref:`conda(+pip) <conda-install>` depending on your preference.
+Dependencies can be installed using either pip or conda(+pip) depending on your preference.
 
 .. _pip-install:
 
@@ -40,7 +40,7 @@ Once you have Python 3.9, create a new virtualenv using the tool of your choice 
 
 You can then install the `code_prac` in editable mode, and all its dependencies using::
 
-    pip install -e .[dev]
+    pip install -e '.[dev]'
 
 .. _pyenv: https://github.com/pyenv/pyenv
 
@@ -53,4 +53,4 @@ Setup a new conda environment with all required dependencies and the `code_prac`
 
     conda env create -f environment.yml
     conda activate code_prac_hwsa2021
-    pip install -e .[dev]
+    pip install -e '.[dev]'
