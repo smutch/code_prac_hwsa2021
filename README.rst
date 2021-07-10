@@ -7,7 +7,7 @@ A note on the code
 ------------------
 
 This is not a production or science-ready code. It is only meant to be used as an example code to practice optimisation and play with Python tools. It is modified from a student's coursework project and makes several (well-founded) simplifying assumptions. The code has NOT been validated against known solutions.
-*** DO NOT USE THIS FOR RESEARCH! **
+Do not use this code for research!
 
 
 Getting set up
