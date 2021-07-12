@@ -28,8 +28,9 @@ def tophat_filter(k, r):
     return (3 * (np.sin(kr) - (kr * np.cos(kr))) / (kr) ** 3) ** 2
 
 
-def power(k, h=LITTLE_H0_INV, n=1.0):
-    q = k / WM * h ** 2
+@numba.njit
+def power(k, n=1.0):
+    q = k / WM * LITTLE_H0_INV ** 2
     T = (
         np.log(1 + 2.34 * q)
         / (2.34 * q)
@@ -125,7 +126,7 @@ def main(plot=False):
 
     profile.disable()
     ps = pstats.Stats(profile).strip_dirs().sort_stats(pstats.SortKey.TIME)
-    ps.print_stats()
+    ps.print_stats(10)
 
     if plot:
         p_s_plot(redshifts, masses, dn_dlogm_list)
